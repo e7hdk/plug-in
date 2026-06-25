@@ -1,0 +1,28 @@
+{
+  "//": "Recommended permissions for a repo using the plug-in agent org. Copy this into .claude/settings.json (merge with any existing permissions block). Extend `allow` with your stack's build/test commands (e.g. Bash(npm test:*), Bash(cargo test:*)) and your source write-scopes (e.g. Write(src/**), Write(apps/**)); point the `ask` deploy entry at your deploy command. The verify-on-write hook ships with the plugin itself.",
+  "permissions": {
+    "deny": [
+      "Write(.env*)",
+      "Write(secrets/**)",
+      "Write(**/*.key)",
+      "Bash(git push --force:*)",
+      "Bash(rm -rf:*)"
+    ],
+    "ask": [
+      "Write(infra/**)",
+      "Bash(*deploy*:*)"
+    ],
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash(git:*)",
+      "Bash(bash scripts/verify.sh:*)",
+      "Write(docs/**)",
+      "Write(tests/**)",
+      "Write(.claude/**)",
+      "mcp__github"
+    ],
+    "defaultMode": "default"
+  }
+}

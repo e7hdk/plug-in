@@ -1,0 +1,47 @@
+name: validate
+
+# Guards the plugin's contract on every change: manifests parse, every agent description carries
+# an auto-delegation trigger, and the plugin + marketplace pass `claude plugin validate --strict`.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "plugin/**"
+      - ".claude-plugin/**"
+      - "scripts/**"
+      - ".github/workflows/validate.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JSON syntax (manifests, hooks, templates)
+        run: |
+          for f in \
+            .claude-plugin/marketplace.json \
+            plugin/.claude-plugin/plugin.json \
+            plugin/hooks/hooks.json \
+            plugin/templates/settings.template.json; do
+            echo "checking $f"
+            jq empty "$f"
+          done
+
+      - name: Agent description-trigger lint
+        run: bash scripts/lint-agents.sh
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate plugin (strict)
+        run: claude plugin validate ./plugin --strict
+
+      - name: Validate marketplace (strict)
+        run: claude plugin validate . --strict

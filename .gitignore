@@ -1,0 +1,9 @@
+# OS
+.DS_Store
+
+# Local build seed — not part of the shipped plugin (holds the internal source-org snapshot).
+# Remove this line if you want the build plan / snapshot tracked in this repo.
+plugin-dev/
+
+# Tooling installed locally
+node_modules/

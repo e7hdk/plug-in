@@ -1,0 +1,49 @@
+{
+  "name": "plug-in",
+  "version": "0.1.0",
+  "displayName": "SaaS Agent Org",
+  "description": "A drop-in AI engineering + GTM organization for any SaaS repo: an orchestrator->specialist agent team, a GitHub-Issues task bus, parallel quality gates (reviewer || qa || security), and mechanical guardrails. Parameterized through your repo's AGENTS.md.",
+  "author": {
+    "name": "Mehmet Fatih Aksoy",
+    "email": "mehmet.fatih.reis@gmail.com"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/e7hdk/plug-in",
+  "homepage": "https://github.com/e7hdk/plug-in",
+  "keywords": [
+    "agents",
+    "orchestration",
+    "saas",
+    "sdlc",
+    "code-review",
+    "devops",
+    "agent-org"
+  ],
+  "hooks": "./hooks/hooks.json",
+  "userConfig": {
+    "verify_command": {
+      "title": "Verify gate command",
+      "type": "string",
+      "description": "The quality gate the verify-on-write hook and builders run (formatter + linter + tests), relative to the repo root. Keep it in sync with the 'verify gate' line in your AGENTS.md.",
+      "default": "scripts/verify.sh"
+    },
+    "deploy_command": {
+      "title": "Deploy command",
+      "type": "string",
+      "description": "Command or script that performs a production deploy. /ship routes it through a human-approval gate. Leave blank if releases happen outside the repo (e.g. a platform's git integration).",
+      "default": ""
+    },
+    "default_branch": {
+      "title": "Default branch",
+      "type": "string",
+      "description": "The protected branch PRs merge into and that is never force-pushed.",
+      "default": "main"
+    },
+    "tracker": {
+      "title": "Task tracker",
+      "type": "string",
+      "description": "The task-bus backend used as the message bus for work items. Currently 'github' (GitHub Issues); 'linear' is planned.",
+      "default": "github"
+    }
+  }
+}
