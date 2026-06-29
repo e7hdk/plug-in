@@ -6,8 +6,9 @@ a GitHub-Issues task bus, parallel quality gates, and mechanical guardrails.
 
 You fill in one `AGENTS.md` (your product + stack + rules); the agents do the rest.
 
-> **Status:** v0.1.0 — initial release. 36 stack-neutral agents across 5 pods + governance,
-> 9 commands, expertise profiles, depth/capability/compute axes, a verify hook, and CI.
+> **Status:** v0.2.0. 37 stack-neutral agents + 10 commands; greenfield (`/init-org`) **and
+> existing-repo (`/onboard`) onboarding**, per-agent memory, expertise profiles,
+> depth/capability/compute axes, a verify hook, and CI.
 
 ## What you get
 
@@ -17,9 +18,9 @@ You fill in one `AGENTS.md` (your product + stack + rules); the agents do the re
 - **Parallel quality gates** on every PR: `reviewer` ∥ `qa` ∥ `security` (block merge on fail).
 - **Mechanical guardrails.** No secrets, no force-push; deploy / money / outbound are human-gated.
 
-### Roster (36 agents today)
+### Roster (37 agents today)
 
-`orchestrator` · `product` · `architect` · `backend-builder` · `api-builder` · `data-builder` ·
+`orchestrator` · `product` · `architect` · `codebase-analyst` · `backend-builder` · `api-builder` · `data-builder` ·
 `worker-builder` · `frontend-builder` · `mobile-builder` · `mobile-qa` · `mobile-release` · `design` ·
 `reviewer` · `qa` · `security` · `e2e-qa` ·
 `perf-qa` · `a11y-reviewer` · `supply-chain-security` · `devops` · `sre` · `release-manager` ·
@@ -32,11 +33,13 @@ planned specialist roster.
 
 ### Commands
 
-`/init-org` · `/scale-org` · `/spec` · `/feature` · `/next-issue` · `/review` · `/ship` · `/standup` · `/incident`
+`/init-org` · `/onboard` · `/scale-org` · `/spec` · `/feature` · `/next-issue` · `/review` · `/ship` · `/standup` · `/incident`
 
-`/init-org` scaffolds your `AGENTS.md` (from a template), the task-bus issue labels, the per-area
-nested rules, and the **active roster** for your depth — run it once to onboard. `/scale-org <depth>`
-changes the active roster later as the team grows; the orchestrator routes only to active agents.
+`/init-org` scaffolds a **fresh** repo (`AGENTS.md`, `CLAUDE.md`, issue labels, nested rules, and the
+**active roster** for your depth). `/onboard` does the same for an **existing** repo — it analyzes the
+code, generates `AGENTS.md` + a `docs/architecture.md` map from the real stack, and wires up `CLAUDE.md`.
+`/scale-org <depth>` changes the active roster later as the team grows; the orchestrator routes only to
+active agents.
 
 ## Guardrails
 

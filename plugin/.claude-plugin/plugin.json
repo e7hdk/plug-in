@@ -1,6 +1,6 @@
 {
   "name": "plug-in",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "displayName": "SaaS Agent Org",
   "description": "A drop-in AI engineering + GTM organization for any SaaS repo: an orchestrator->specialist agent team, a GitHub-Issues task bus, parallel quality gates (reviewer || qa || security), and mechanical guardrails. Parameterized through your repo's AGENTS.md.",
   "author": {

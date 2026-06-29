@@ -13,7 +13,7 @@ Operate under the constitution in `AGENTS.md`. The task bus is **GitHub Issues**
 2. **Route by scope.** If `AGENTS.md` declares an **Active roster**, route ONLY to those agents (it encodes the repo's chosen depth); otherwise use the full installed roster. Match each task to the specialist (use the paths declared in `AGENTS.md`):
    - backend: API endpoints/contracts → `api-builder`; schema/migrations/queries → `data-builder`; jobs/queues/async → `worker-builder`; other server-side (or if the specialists aren't in use) → `backend-builder`
    - web/UI paths → `frontend-builder`; mobile app → `mobile-builder` (mobile capability); localization → `i18n-engineer` (i18n capability)
-   - specs/backlog → `product`; system design/ADRs → `architect`
+   - specs/backlog → `product`; system design/ADRs → `architect`; map an existing/unfamiliar codebase → `codebase-analyst`
    - CI/CD, infra, deploy → `devops`; docs → `docs`; incidents/regressions → `debugger`
    - content/funnel → `growth`; outreach → `sales`; onboarding/support → `support`; metrics → `data`; data pipelines/ETL/warehouse → `data-engineer`
    - compliance/audit → `compliance`; privacy/personal-data/DPIA → `privacy`; ToS/contracts/licenses/claims → `legal-review`

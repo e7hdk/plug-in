@@ -65,6 +65,7 @@ Model column is a recommendation (tune per agent): **H**=haiku, **S**=sonnet, **
 | orchestrator | lead | decompose · route · gate | lean | O | ✓ |
 | product | eng | ideas → specs + issues | lean | S | ✓ |
 | architect | eng | system design, ADRs, contracts | lean | O | ✓ |
+| codebase-analyst | eng | reverse-engineer an existing repo → map + draft AGENTS.md | team | S | ✓ |
 | backend-builder | eng | server-side code (generalist) | lean | S | ✓ |
 | frontend-builder | eng | web/UI code (generalist) | lean | S | ✓ |
 | reviewer | quality | correctness/perf/style review | lean | O | ✓ |
@@ -165,6 +166,9 @@ model: <haiku|sonnet|opus>
 | Guardrails | `hooks/hooks.json` (verify-on-write) + `templates/settings.template.json` (permissions) |
 | Install-time config | `plugin.json` → `userConfig` (verify/deploy/branch/tracker) |
 | Expertise profiles | `templates/profiles/{languages,domains,capabilities}/*.md` |
+| Constitution loader | host repo `CLAUDE.md` (`@AGENTS.md`) — what Claude Code actually auto-loads |
+| Shared memory (docs) | `docs/architecture.md` (codebase-analyst) + `docs/adr/` + postmortems |
+| Per-agent memory | `.claude/agent-memory/<agent>/` (opt-in; plugin agents need a project copy) |
 
 ---
 
@@ -221,7 +225,7 @@ overrides per-agent in `.claude/agents/` (a future `/set-compute <tier>` can aut
 | qa · e2e-qa · perf-qa · a11y-reviewer | S | S | S | **O** |
 | design · debugger · incident-commander | S | S | S | **O** |
 | product · devops · data · finance · sre · release-manager · dba · data-engineer · mobile-builder · mobile-qa · mobile-release | S | S | S | S |
-| i18n-engineer · compliance · privacy · legal-review | S | S | S | S |
+| i18n-engineer · compliance · privacy · legal-review · codebase-analyst | S | S | S | S |
 | docs · growth · sales · support | H | H | **S** | S |
 
 - **low** — only architect + security on Opus (cheapest; solo/MVP).
@@ -247,3 +251,27 @@ orchestrator routes **explicitly** by name, and each `description` carries a spe
 > Our GitHub-Issues bus is a portable **shared task list** (the pattern Claude Code's experimental
 > "agent teams" formalize with a mailbox + file-locking). We don't depend on that experimental
 > feature; a future peer-collaboration mode could use it for agents that must challenge each other.
+
+---
+
+## 10. Memory — how the org remembers
+
+Two layers:
+
+1. **Institutional memory = checked-in docs (works everywhere, no caveat).** The org accumulates
+   knowledge in version-controlled artifacts every agent reads: `AGENTS.md` (+ nested rules),
+   `docs/architecture.md` (the repo map from `codebase-analyst`), `docs/adr/` (architect's
+   decisions), and postmortems (debugger). This survives sessions and onboarding and needs no
+   special feature — agents read/write it with their normal tools.
+2. **Per-agent memory (opt-in).** Claude Code supports a private, persistent per-agent store
+   (`memory: project` → `.claude/agent-memory/<agent>/MEMORY.md`, checked in; the agent sees the
+   first ~200 lines at startup and writes updates). It is **not automatic** — the charter tells the
+   agent to read it before work and update it after. **Caveat: plugin-shipped agents ignore the
+   `memory` field**, so to activate it you install a project-local copy of the agent in
+   `.claude/agents/` (it overrides the plugin version). `/init-org` and `/onboard` offer this for the
+   memory-relevant agents (architect, debugger, reviewer, security, codebase-analyst); the trade-off
+   is that copied agents no longer auto-update with the plugin.
+
+**Constitution loading.** Claude Code auto-loads `CLAUDE.md`, **not** `AGENTS.md`. `/init-org` and
+`/onboard` create a root `CLAUDE.md` that does `@AGENTS.md`, so the constitution + Active roster load
+for the main session and every subagent (subagents load CLAUDE.md; the built-in Explore/Plan agents don't).
